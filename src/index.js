@@ -1,66 +1,74 @@
 require("dotenv").config();
-const TelegramStrategy = require('passport-telegram-official');
+
 const bodyParser = require('body-parser');
-
+const session = require('express-session');
+const passport = require('passport');
 const express = require('express')
-const app = express()
-const port = 8080
+const {setup} = require('./discord');
+const {telesetup} = require('./telegram');
+const tl = require('express-tl');
+const cookieParser = require('cookie-parser');
 
-app.get('/', express.static('public'));
+const app = express()
+
+const port = process.env.PORT || 8080
+const path = process.env.HOSTPATH || `http://localhost:${port}`;
+
+app.engine('tl', tl)
+app.set('views', './views');
+app.set('view engine', 'tl');
+
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.get('/', express.static('public'));
+
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (obj, done) {
+  done(null, obj);
+});
+
+app.get('/', function(req, res) {
+  // res.cookie('uuid', '');
+  // res.cookie('provider', '');
+  // res.cookie('username', '');
+
+	res.render('index', {
+    loggedIn: req.isAuthenticated(),
+    path: path,
+    bot: process.env.TELEGRAM_NAME
+	})
+})
+
+// app.get('/static/discord.png', express.static('public/discord.png'));
+app.get('/static', express.static('public'));
+
+app.get('/info', checkAuth, function (req, res) {
+  // req.session.cookie.uuid = req.user;
+  req.user.uuid = req.cookies.uuid;
+  // console.log(req.cookies.uuid, req.user)
+  res.json(req.user);
+});
+
+function checkAuth(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.send('not logged in :(');
+}
+
+
+setup(app, path);
+telesetup(app, path);
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-
-//=====
-/*
-const throwError = () => { throw new TypeError('Please provide your credentials through BOT_TOKEN and BOT_NAME envivroment variable. Also set PORT to 80, because widget won\'t work otherwise.') };
-
-const botToken = process.env.BOT_TOKEN || throwError();
-const botName = process.env.BOT_NAME || throwError();
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.use(new TelegramStrategy({ botToken: botToken, passReqToCallback: true }, (req, user, done) => {
-  console.log(user);
-
-  req.user = user;
-  done(null, user)
-}));
-
-const app = express();
-// Here we create page with auth widget
-app.get('/', (req, res) => {
-  res.send(`<html>
-<head></head>
-<body>
-  <div id="widget">
-      <script 
-         async 
-         src="https://telegram.org/js/telegram-widget.js?2"
-         data-telegram-login="${botName}"
-         data-size="medium"
-         data-auth-url="/login"
-         data-request-access="write"
-       ></script>
-  </div>
-</body>
-</html>`);
-});
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(passport.initialize());
-
-app.use('/login', passport.authenticate('telegram'), (req, res) => {
-  res.send(`You logged in! Hello ${req.user.first_name}!`);
-});
-
-const port = process.env.PORT || 4600;
-app.listen(port, () => {
-  console.log(`Go to localhost:${port} and try to login`)
-});
-*/
