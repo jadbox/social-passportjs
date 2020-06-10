@@ -18,6 +18,7 @@ console.log('port', port);
 console.log('path process.env.HOSTPATH', path);
 console.log('process.env.TELEGRAM_NAME', process.env.TELEGRAM_NAME);
 console.log('process.env.DISCORD_CLIENT', process.env.DISCORD_CLIENT);
+console.log('process.env.REDIRECT', process.env.REDIRECT);
 
 app.engine('tl', tl)
 app.set('views', './views');
@@ -78,4 +79,4 @@ function checkAuth(req, res, next) {
 setup(app, path);
 telesetup(app, path);
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => console.log(`Auth app listening at ${path}`));

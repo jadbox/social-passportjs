@@ -46,7 +46,8 @@ function telesetup(app, path) {
   
   // app.use(passport.initialize());
 
-  app.use('/tlogin', passport.authenticate('telegram'), (req, res) => {
+  app.use('/tlogin2', passport.authenticate('telegram'), (req, res) => {
+    
     res.cookie('uuid', 't'+req.user.id);
     res.cookie('provider', 'telegram');
     res.cookie('username', req.user.username);
@@ -58,6 +59,33 @@ function telesetup(app, path) {
     
     // res.send(`You logged in! Hello ${req.user.first_name}!`);
     // res.redirect('/');
+  });
+
+  app.get('/tlogin', function(req, res, next) {
+    passport.authenticate('telegram', function(err, user, info) {
+      if (err) { 
+        console.warn('telegram err', err, '-', info);
+        return next(err); 
+      }
+      if (!user) { 
+        console.warn('telegram no user', info);
+        return res.redirect('/'); 
+      }
+
+      console.log('Authentication Telegram success:', user.username)
+  
+      res.cookie('uuid', 't'+user.id);
+      res.cookie('provider', 'telegram');
+      res.cookie('username', user.username);
+  
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+  
+        if(process.env.REDIRECT) res.redirect(process.env.REDIRECT);
+        else res.redirect('/info');
+        // return res.redirect('/users/' + user.username);
+      });
+    })(req, res, next);
   });
 }
 
