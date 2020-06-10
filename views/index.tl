@@ -8,31 +8,13 @@
         ><br /><br />
         Telegram ${d.bot} login:<br />
 
-        <script
-          async
+        <script async
           src="${d.twidget}"
           data-telegram-login="${d.bot}"
-          data-size="medium"
+          data-size="large"
           data-auth-url="/tlogin"
           data-request-access="write"
         ></script>
-
-        <script type="text/javascript">
-          function onTelegramAuth(user) {
-            // data-onauth="onTelegramAuth(user)"
-            // Logged in as Jonathan Dunlap |Σ| (732221503, @jadbox)
-            alert(
-              'Logged in as ' +
-                user.first_name +
-                ' ' +
-                user.last_name +
-                ' (' +
-                user.id +
-                (user.username ? ', @' + user.username : '') +
-                ')'
-            );
-          }
-        </script>
 
         <br /><br />
         <p>Logged in status: ${d.loggedIn}</p>

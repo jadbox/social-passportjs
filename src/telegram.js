@@ -1,7 +1,7 @@
-const express = require('express');
-const passport = require('passport');
-
-const {TelegramStrategy} = require('passport-telegram-official');
+const express = require("express");
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const { TelegramStrategy } = require("passport-telegram-official");
 
 const throwError = () => {
   throw new TypeError(
@@ -15,53 +15,60 @@ const botName = process.env.TELEGRAM_NAME || throwError();
 // console.log('botToken', botName, botToken);
 
 passport.use(
-  // , passReqToCallback: true
-  new TelegramStrategy({ botToken: botToken }, (req, user, done) => {
-    console.log('authenticated tg:', user);
+  //
+  new TelegramStrategy(
+    { botToken: botToken, passReqToCallback: true },
+    (req, user, done) => {
+      console.log("!! authenticated tg:", user);
 
-    req.user = user;
-    done(null, user);
-  })
+      req.user = user;
+      done(null, user);
+    }
+  )
 );
 
 function telesetup(app, path) {
-  app.use('/tlogin2', passport.authenticate('telegram'), (req, res) => {
-    
-    res.cookie('uuid', 't'+req.user.id);
-    res.cookie('provider', 'telegram');
-    res.cookie('username', req.user.username);
+  app.use("/tlogin2", passport.authenticate("telegram"), (req, res) => {
+    const id = "t" + req.user.id;
+    const token = jwt.sign(id, process.env.JWT_SECRET);
+    res.cookie("jwt", token);
+    res.cookie("uuid", id);
+    res.cookie("provider", "telegram");
+    res.cookie("username", req.user.username);
 
-    console.log('telegram', req.user);
+    console.log("telegram", req.user);
     // res.redirect('/info');
-    if(process.env.REDIRECT) res.redirect(process.env.REDIRECT);
-	  else res.redirect('/info');
-    
+    if (process.env.REDIRECT) res.redirect(process.env.REDIRECT);
+    else res.redirect("/info");
+
     // res.send(`You logged in! Hello ${req.user.first_name}!`);
     // res.redirect('/');
   });
 
-  app.get('/tlogin', function(req, res, next) {
-    passport.authenticate('telegram', function(err, user, info) {
-      if (err) { 
-        console.warn('telegram err', err, '-', info);
-        return next(err); 
+  app.get("/tlogin", function (req, res, next) {
+    passport.authenticate("telegram", function (err, user, info) {
+      if (err) {
+        console.warn("telegram err", err, "-", info);
+        return next(err);
       }
-      if (!user) { 
-        console.warn('telegram no user', info);
-        return res.redirect('/'); 
+      if (!user) {
+        console.warn("telegram no user", info);
+        return res.redirect("/");
       }
 
-      console.log('Authentication Telegram success:', user.username)
-  
-      res.cookie('uuid', 't'+user.id);
-      res.cookie('provider', 'telegram');
-      res.cookie('username', user.username);
-  
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-  
-        if(process.env.REDIRECT) res.redirect(process.env.REDIRECT);
-        else res.redirect('/info');
+      console.log("Authentication Telegram success:", user.username);
+
+      res.cookie("uuid", "t" + user.id);
+      res.cookie("provider", "telegram");
+      res.cookie("username", user.username);
+
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+
+        if (process.env.REDIRECT) res.redirect(process.env.REDIRECT);
+        else res.redirect("/info");
         // return res.redirect('/users/' + user.username);
       });
     })(req, res, next);

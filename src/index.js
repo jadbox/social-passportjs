@@ -75,6 +75,7 @@ app.get('/logout', function(req, res){
   res.clearCookie('uuid');
   res.clearCookie('provider');
   res.clearCookie('username');
+  res.clearCookie('jwt');
 
   req.logout();
   res.redirect('/');
