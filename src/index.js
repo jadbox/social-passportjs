@@ -14,6 +14,11 @@ const app = express()
 const port = process.env.PORT || 8080
 const path = process.env.HOSTPATH || `http://localhost:${port}`;
 
+console.log('port', port);
+console.log('path process.env.HOSTPATH', path);
+console.log('process.env.TELEGRAM_NAME', process.env.TELEGRAM_NAME);
+console.log('process.env.DISCORD_CLIENT', process.env.DISCORD_CLIENT);
+
 app.engine('tl', tl)
 app.set('views', './views');
 app.set('view engine', 'tl');
@@ -41,6 +46,7 @@ passport.deserializeUser(function (obj, done) {
 });
 
 app.get('/', function(req, res) {
+  // res.cookie('', req.param(''))
   // res.cookie('uuid', '');
   // res.cookie('provider', '');
   // res.cookie('username', '');
@@ -48,7 +54,8 @@ app.get('/', function(req, res) {
 	res.render('index', {
     loggedIn: req.isAuthenticated(),
     path: path,
-    bot: process.env.TELEGRAM_NAME
+    bot: process.env.TELEGRAM_NAME,
+    twidget: process.env.TELEGRAM_WIDGET_URL || 'https://telegram.org/js/telegram-widget.js?2'
 	})
 })
 

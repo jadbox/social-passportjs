@@ -14,7 +14,7 @@ const botName = process.env.TELEGRAM_NAME || throwError();
 
 passport.use(
   new TelegramStrategy({ botToken: botToken, passReqToCallback: true }, (req, user, done) => {
-    console.log(user);
+    console.log('authenticated tg:', user);
 
     req.user = user;
     done(null, user);
@@ -52,7 +52,9 @@ function telesetup(app, path) {
     res.cookie('username', req.user.username);
 
     console.log('telegram', req.user);
-    res.redirect('/info');
+    // res.redirect('/info');
+    if(process.env.REDIRECT) res.redirect(process.env.REDIRECT);
+	  else res.redirect('/info');
     
     // res.send(`You logged in! Hello ${req.user.first_name}!`);
     // res.redirect('/');
