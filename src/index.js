@@ -66,6 +66,7 @@ app.get('/static', express.static('public'));
 app.get('/info', checkAuth, function (req, res) {
   // req.session.cookie.uuid = req.user;
   req.user.uuid = req.cookies.uuid;
+  req.user.loggedIn = true;
   // console.log(req.cookies.uuid, req.user)
   res.json(req.user);
 });
@@ -81,7 +82,8 @@ app.get('/logout', function(req, res){
 
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) return next();
-  res.send('not logged in :(');
+  res.json({loggedIn: false});
+  // res.send('not logged in :(');
 }
 
 
