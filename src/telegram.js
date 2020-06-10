@@ -31,23 +31,6 @@ passport.use(
 );
 
 function telesetup(app, path) {
-  app.use("/tlogin2", passport.authenticate("telegram"), (req, res) => {
-    const id = "t" + req.user.id;
-    const token = jwt.sign(id, process.env.JWT_SECRET);
-    res.cookie("jwt", token);
-    res.cookie("uuid", id);
-    res.cookie("provider", "telegram");
-    res.cookie("username", req.user.username);
-
-    console.log("telegram", req.user);
-    // res.redirect('/info');
-    if (process.env.REDIRECT) res.redirect(process.env.REDIRECT);
-    else res.redirect("/info");
-
-    // res.send(`You logged in! Hello ${req.user.first_name}!`);
-    // res.redirect('/');
-  });
-
   app.get("/tlogin", function (req, res, next) {
     // console.log('tlogin botToken', botToken);
     // console.log("tlogin req", req.params, '-', req.body);
@@ -65,7 +48,11 @@ function telesetup(app, path) {
 
       console.log("Authentication Telegram success:", user.username);
 
-      res.cookie("uuid", "t" + user.id);
+      const id = "t" + user.id;
+      const token = jwt.sign(id, process.env.JWT_SECRET);
+      res.cookie("jwt", token);
+
+      res.cookie("uuid", id);
       res.cookie("provider", "telegram");
       res.cookie("username", user.username);
 
