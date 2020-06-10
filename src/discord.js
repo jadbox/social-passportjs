@@ -42,10 +42,6 @@ function setup(app, path) {
 	  else res.redirect('/info');
     } // auth success
   );
-  app.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
-  });
 }
 
 module.exports = { setup };

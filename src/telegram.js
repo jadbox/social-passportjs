@@ -12,8 +12,11 @@ const throwError = () => {
 const botToken = process.env.TELEGRAM_TOKEN || throwError();
 const botName = process.env.TELEGRAM_NAME || throwError();
 
+// console.log('botToken', botName, botToken);
+
 passport.use(
-  new TelegramStrategy({ botToken: botToken, passReqToCallback: true }, (req, user, done) => {
+  // , passReqToCallback: true
+  new TelegramStrategy({ botToken: botToken }, (req, user, done) => {
     console.log('authenticated tg:', user);
 
     req.user = user;
@@ -22,30 +25,6 @@ passport.use(
 );
 
 function telesetup(app, path) {
-  // Here we create page with auth widget
-  /*
-  app.get('/', (req, res) => {
-    res.send(`<html>
-<head></head>
-<body>
-  <div id="widget">
-      <script 
-         async 
-         src="https://telegram.org/js/telegram-widget.js?2"
-         data-telegram-login="${botName}"
-         data-size="medium"
-         data-auth-url="/login"
-         data-request-access="write"
-       ></script>
-  </div>
-</body>
-</html>`);
-  });
-  */
-
-  
-  // app.use(passport.initialize());
-
   app.use('/tlogin2', passport.authenticate('telegram'), (req, res) => {
     
     res.cookie('uuid', 't'+req.user.id);

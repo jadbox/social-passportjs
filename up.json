@@ -3,6 +3,7 @@
     "profile": "abridged",
     "regions": ["us-east-2"],
     "lambda": {
-        "runtime": "nodejs12.x"
+        "runtime": "nodejs12.x",
+        "memory": 256
     }
 }

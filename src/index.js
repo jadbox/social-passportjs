@@ -70,6 +70,15 @@ app.get('/info', checkAuth, function (req, res) {
   res.json(req.user);
 });
 
+app.get('/logout', function(req, res){
+  res.clearCookie('uuid');
+  res.clearCookie('provider');
+  res.clearCookie('username');
+
+  req.logout();
+  res.redirect('/');
+});
+
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.send('not logged in :(');

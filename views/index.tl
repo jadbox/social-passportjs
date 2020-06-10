@@ -16,6 +16,7 @@
           data-auth-url="/tlogin"
           data-request-access="write"
         ></script>
+
         <script type="text/javascript">
           function onTelegramAuth(user) {
             // data-onauth="onTelegramAuth(user)"
@@ -35,6 +36,7 @@
 
         <br /><br />
         <p>Logged in status: ${d.loggedIn}</p>
+        <p><a href="/logout">log out</a></p>
       </div>
     </div>
     <br />
