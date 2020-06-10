@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const express = require('express')
-const {setup} = require('./discord');
+const {discord} = require('./discord');
 const {telesetup} = require('./telegram');
 const tl = require('express-tl');
 const cookieParser = require('cookie-parser');
@@ -47,11 +47,6 @@ passport.deserializeUser(function (obj, done) {
 });
 
 app.get('/', function(req, res) {
-  // res.cookie('', req.param(''))
-  // res.cookie('uuid', '');
-  // res.cookie('provider', '');
-  // res.cookie('username', '');
-
 	res.render('index', {
     loggedIn: req.isAuthenticated(),
     path: path,
@@ -84,11 +79,9 @@ app.get('/logout', function(req, res){
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.json({loggedIn: false});
-  // res.send('not logged in :(');
 }
 
-
-setup(app, path);
+discord(app, path);
 telesetup(app, path);
 
 app.listen(port, () => console.log(`Auth app listening at ${path}`));

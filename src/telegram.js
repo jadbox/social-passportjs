@@ -13,11 +13,14 @@ const botToken = process.env.TELEGRAM_TOKEN || throwError();
 const botName = process.env.TELEGRAM_NAME || throwError();
 
 // console.log('botToken', botName, botToken);
-
+let tstrat = null;
 passport.use(
-  //
-  new TelegramStrategy(
-    { botToken: botToken, passReqToCallback: true },
+  tstrat = new TelegramStrategy(
+    {
+      botToken: botToken,
+      queryExpiration: 86400 * 10,
+      passReqToCallback: true,
+    },
     (req, user, done) => {
       console.log("!! authenticated tg:", user);
 
@@ -46,6 +49,10 @@ function telesetup(app, path) {
   });
 
   app.get("/tlogin", function (req, res, next) {
+    // console.log('tlogin botToken', botToken);
+    // console.log("tlogin req", req.params, '-', req.body);
+    // console.log('t', tstrat.options);
+
     passport.authenticate("telegram", function (err, user, info) {
       if (err) {
         console.warn("telegram err", err, "-", info);

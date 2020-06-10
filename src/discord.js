@@ -54,4 +54,4 @@ function setup(app, path) {
   );
 }
 
-module.exports = { setup };
+module.exports = { discord: setup };

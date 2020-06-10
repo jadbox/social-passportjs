@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
+    "build" : "",
     "dev": "nodemon --inspect src/index.js"
   },
   "devDependencies": {
