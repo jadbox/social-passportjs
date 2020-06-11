@@ -40,13 +40,15 @@ function setup(app, path) {
     "/dcallback",
     passport.authenticate("discord", { failureRedirect: "/" }),
     function (req, res) {
+      const user = req.user;
       // req.session.cookie.uuid = req.user.id;
-      const id = "d" + req.user.id;
+      const id = "d" + user.id;
       const token = jwt.sign(id, process.env.JWT_SECRET);
       res.cookie("jwt", token);
       res.cookie("uuid", id);
       res.cookie("provider", "discord");
-      res.cookie("username", req.user.username);
+      res.cookie("username", user.username);
+      res.cookie("discord_id", user.id);
 
       if (process.env.REDIRECT) res.redirect(process.env.REDIRECT);
       else res.redirect("/info");

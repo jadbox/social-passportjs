@@ -54,6 +54,7 @@ function telesetup(app, path) {
 
       res.cookie("uuid", id);
       res.cookie("provider", "telegram");
+      res.cookie("telegram_id", user.id);
       res.cookie("username", user.username);
 
       req.logIn(user, function (err) {
