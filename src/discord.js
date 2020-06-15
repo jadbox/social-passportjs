@@ -44,8 +44,8 @@ function setup(app, path) {
       // req.session.cookie.uuid = req.user.id;
       const id = "d" + user.id;
       const token = jwt.sign(id, process.env.JWT_SECRET);
-      res.cookie("jwt", token);
-      res.cookie("uuid", id);
+      res.cookie("discord_jwt", token);
+      // res.cookie("uuid", id);
       res.cookie("provider", "discord");
       res.cookie("username", user.username);
       res.cookie("discord_id", user.id);

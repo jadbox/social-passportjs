@@ -50,9 +50,9 @@ function telesetup(app, path) {
 
       const id = "t" + user.id;
       const token = jwt.sign(id, process.env.JWT_SECRET);
-      res.cookie("jwt", token);
+      res.cookie("telegram_jwt", token);
 
-      res.cookie("uuid", id);
+      // res.cookie("uuid", id);
       res.cookie("provider", "telegram");
       res.cookie("telegram_id", user.id);
       res.cookie("username", user.username);

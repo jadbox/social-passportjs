@@ -26,7 +26,9 @@ app.set('view engine', 'tl');
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.get('/', express.static('public'));
+
+app.use(express.static('public'))
+
 
 app.use(
   session({
@@ -46,13 +48,24 @@ passport.deserializeUser(function (obj, done) {
   done(null, obj);
 });
 
-app.get('/', function(req, res) {
+app.get('/social', function(req, res) {
 	res.render('index', {
     loggedIn: req.isAuthenticated(),
     path: path,
     bot: process.env.TELEGRAM_NAME,
     twidget: process.env.TELEGRAM_WIDGET_URL || 'https://telegram.org/js/telegram-widget.js?2'
 	})
+})
+
+app.get('/config', function(req, res) {
+	res.render('config', {
+    filename: 'config.js',
+    loggedIn: req.isAuthenticated(),
+    path: path,
+    bot: process.env.TELEGRAM_NAME,
+    twidget: process.env.TELEGRAM_WIDGET_URL || 'https://telegram.org/js/telegram-widget.js?2'
+    
+  })
 })
 
 // app.get('/static/discord.png', express.static('public/discord.png'));
