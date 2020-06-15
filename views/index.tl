@@ -38,11 +38,12 @@
           data-request-access="write"
         ></script>
 
-        <br /><br />
-        <p>Logged in status: ${d.loggedIn}</p>
-        <p><a href="/logout">log out</a></p>
+        <div style="display: none;"></div>
+          <br /><br />
+          <p>Logged in status: ${d.loggedIn}</p>
+          <p><a href="/logout">log out</a></p>
 
-        <div style="display: none;">
+        
           <p id="loggedInUser"></p>
           <button onclick="logout()">Cognito Logout</button>
       </div>

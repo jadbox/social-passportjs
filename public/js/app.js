@@ -19,7 +19,7 @@ function init() {
     localStorage.setItem('client_id', uuidv4());
   }*/
 
-  refreshData();
+  // refreshData();
   // setInterval(refreshData, 1000);
 }
 

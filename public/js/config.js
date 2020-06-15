@@ -4,7 +4,7 @@ var COGNITO_AUTH_DATA = {
   // Using Amazon Cognito custom domain below, default domain is also fine.
   AppWebDomain: 'auth.collab.land',
   TokenScopesArray: ['phone', 'email', 'openid', 'aws.cognito.signin.user.admin', 'profile'],
-  RedirectUriSignIn: 'http://localhost:8080', // 'https://portal.collab.land',
+  RedirectUriSignIn: 'https://portal.collab.land',
   RedirectUriSignOut: 'https://portal.collab.land'
 };
 
