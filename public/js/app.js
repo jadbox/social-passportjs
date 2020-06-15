@@ -2,6 +2,11 @@ var gCognitoAuth;
 
 function init() {
   gCognitoAuth = new AmazonCognitoIdentity.CognitoAuth(COGNITO_AUTH_DATA);
+  gCognitoAuth.userhandler = gCognitoAuth.userhandler || {};
+  gCognitoAuth.userhandler.onSuccess = function() {
+    // window.href = '/';
+    checkLogin();
+  }
   gCognitoAuth.parseCognitoWebResponse(location.href);
 
   if (window.location.search.indexOf("logout") > -1) {
@@ -38,6 +43,7 @@ function checkLogin() {
 
     // console.log("document.cookie2", username, email);
 
+    console.log('redirecting');
     window.location.href = 'https://portal.collab.land:1880/dashboard';
   }
 }
@@ -81,7 +87,7 @@ function updateView(data) {
 function logout() {
   if (gCognitoAuth.isUserSignedIn()) {
     localStorage.removeItem("client_id");
-    // gCognitoAuth.signOut();
+    // gCognitoAuth.signOut(true);
     gCognitoAuth.globalSignOut((x) => x);
   } else {
     alert("You are not logged in");
