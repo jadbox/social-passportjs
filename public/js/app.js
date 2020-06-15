@@ -10,7 +10,8 @@ function init() {
     // window.location.reload();
   }
 
-  checkLogin();
+  setTimeout(checkLogin, 500);
+
   document.getElementById(
     "loggedInUser"
   ).textContent = gCognitoAuth.getUsername();
@@ -28,11 +29,11 @@ function checkLogin() {
     gCognitoAuth.getSession();
   } else {
     const username = gCognitoAuth.getUsername();
-    const email = JSON.parse(gCognitoAuth.storage.authUser).email;
+    // const email = JSON.parse(gCognitoAuth.storage.authUser).email;
 
     updateCookie("cid", username);
     updateCookie("uuid", username);
-    updateCookie("cemail", email);
+    // updateCookie("cemail", email);
     // updateCookie("max-age", 31536000);
 
     // console.log("document.cookie2", username, email);
