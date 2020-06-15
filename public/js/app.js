@@ -33,7 +33,7 @@ function checkLogin() {
     updateCookie("cid", username);
     updateCookie("uuid", username);
     updateCookie("cemail", email);
-    updateCookie("max-age", 31536000);
+    // updateCookie("max-age", 31536000);
 
     // console.log("document.cookie2", username, email);
 
@@ -45,20 +45,7 @@ function updateCookie(param, username) {
   const cookie = document.cookie || "";
   document.cookie = document.cookie || "";
 
-  if (!cookie) {
-    // console.log('no cookie', param);
-    document.cookie = param + "=" + username;
-  } else if (cookie.indexOf(param) === -1) {
-    // console.log('append cookie', param, username);
-    document.cookie = cookie + "; " + param + "=" + encodeURIComponent(username);
-  } else {
-    // console.log('replace cookie', param);
-    const old = cookie
-      .split("; ")
-      .filter((x) => x.indexOf(param) > -1)[0]
-      .split("=")[1];
-    document.cookie = cookie.replace(old, username);
-  }
+  document.cookie = param + "=" + encodeURIComponent(username) + '; max-age=31536000"';
   // console.log('document.cookie11 ', document.cookie );
 }
 
