@@ -44,8 +44,7 @@ function checkLogin() {
     // console.log("document.cookie2", username, email);
 
     console.log('redirecting', window.REDIRECT);
-    window.location.href = window.REDIRECT;
-    // 'https://portal.collab.land:1888/dashboard';
+    window.location.href = window.REDIRECT || 'https://portal.collab.land:1888/dashboard';
   }
 }
 

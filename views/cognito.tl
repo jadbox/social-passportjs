@@ -6,7 +6,8 @@
     <title>Amazon Cognito hosted UI demo</title>
 
     <script>
-      window.REDIRECT = ${d.redirect}
+      window.REDIRECT = ${d.REDIRECT};
+      console.log('template', window.REDIRECT);
     </script>
 
     <script src="js/vendor/aws-cognito-sdk.min.js"></script>

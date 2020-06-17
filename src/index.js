@@ -60,7 +60,7 @@ app.get('/social', function(req, res) {
 app.get('/', function(req, res) {
 	res.render('cognito', {
     loggedIn: req.isAuthenticated(),
-    redirect: process.env.REDIRECT,
+    REDIRECT: process.env.REDIRECT,
     path: path,
     bot: process.env.TELEGRAM_NAME,
     twidget: process.env.TELEGRAM_WIDGET_URL || 'https://telegram.org/js/telegram-widget.js?2'
