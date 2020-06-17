@@ -6,7 +6,7 @@
     <title>Amazon Cognito hosted UI demo</title>
 
     <script>
-      window.REDIRECT = ${d.redirect || null};
+      window.REDIRECT = '${d.redirect || ""}';
       console.log('template', window.REDIRECT);
     </script>
 
