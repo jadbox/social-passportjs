@@ -27,7 +27,7 @@ app.set('view engine', 'tl');
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 
 app.use(
@@ -59,8 +59,8 @@ app.get('/social', function(req, res) {
 
 app.get('/', function(req, res) {
 	res.render('cognito', {
-    loggedIn: req.isAuthenticated(),
-    REDIRECT: process.env.REDIRECT,
+    // loggedIn: req.isAuthenticated(),
+    redirect: process.env.REDIRECT,
     path: path,
     bot: process.env.TELEGRAM_NAME,
     twidget: process.env.TELEGRAM_WIDGET_URL || 'https://telegram.org/js/telegram-widget.js?2'
