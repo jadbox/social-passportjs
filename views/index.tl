@@ -12,8 +12,7 @@
         RedirectUriSignIn: 'http://localhost:8080', // 'https://portal.collab.land',
         RedirectUriSignOut: 'https://portal.collab.land'
       };*/
-      function init() {
-      }
+      function init() {}
     </script>
   </head>
   <body onload="init()" style="background-color: antiquewhite;">
@@ -32,15 +31,14 @@
           data-request-access="write"
         ></script>
 
-        <div style="display: none;"></div>
+        <div style="display: none;">
           <br /><br />
           <p>Logged in status: ${d.loggedIn}</p>
           <p><a href="/logout">log out</a></p>
 
-        
           <p id="loggedInUser"></p>
           <button onclick="logout()">Cognito Logout</button>
-      </div>
+        </div>
       </div>
     </div>
     <br />
